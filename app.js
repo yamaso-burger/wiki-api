@@ -45,7 +45,8 @@ function postArticle(title, content) {
 // postArticle("ejs", "ejs is one of the npm module which makes creating web-pages easier")
 // readAricles();
 
-app.get('/articles', function(req, res){
+app.route("/articles")
+.get(function(req, res){
     Article.find(function(err, foundArticles){
         if (!err) {
             res.send(foundArticles);
@@ -53,14 +54,12 @@ app.get('/articles', function(req, res){
             res.send(err);
         }
     });
-});
-
-app.post("/articles", function(req, res){
+})
+.post(function(req, res){
     postArticle(req.body.title, req.body.content);
     
-});
-
-app.delete("/articles", function(req, res){
+})
+.delete(function(req, res){
     Article.deleteMany(function(err){
         if (!err) {
             res.send("Successfully deleted");
