@@ -53,7 +53,22 @@ app.get('/articles', function(req, res){
             res.send(err);
         }
     });
-})
+});
+
+app.post("/articles", function(req, res){
+    postArticle(req.body.title, req.body.content);
+    
+});
+
+app.delete("/articles", function(req, res){
+    Article.deleteMany(function(err){
+        if (!err) {
+            res.send("Successfully deleted");
+        } else {
+            res.send("failed");
+        }
+    })
+});
 
 app.listen(port, ()=>{
     console.log('running on port ' + port);
