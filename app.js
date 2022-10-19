@@ -42,8 +42,7 @@ function postArticle(title, content) {
     article.save();
 }
 
-// postArticle("ejs", "ejs is one of the npm module which makes creating web-pages easier")
-// readAricles();
+///////////////////////////////////Requests targeting all articles///////////////////////
 
 app.route("/articles")
 .get(function(req, res){
@@ -67,6 +66,31 @@ app.route("/articles")
             res.send("failed");
         }
     })
+});
+
+///////////////////////////////////Requests targeting each article///////////////////////
+
+
+app.route('/articles/:articleTitle')
+.get(function(req, res){
+    Article.findOne({title: req.params.articleTitle}, function(err, foundArticles){
+        if (err || foundArticles == ""){
+            res.send("not found");
+        } else {
+            res.send(foundArticles);
+        }
+    });
+})
+.put(function(req, res){
+    Article.updateOne({title: req.params.articleTitle},
+        {title: req.body.title, content: req.body.content},
+        function(err){
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Success");
+            }
+        });
 });
 
 app.listen(port, ()=>{
