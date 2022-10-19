@@ -56,10 +56,11 @@ app.route("/articles")
 })
 .post(function(req, res){
     postArticle(req.body.title, req.body.content);
-    
+    res.send("Successfuly posted article.")
 })
 .delete(function(req, res){
-    Article.deleteMany(function(err){
+    Article.deleteMany(
+        function(err){
         if (!err) {
             res.send("Successfully deleted");
         } else {
@@ -91,7 +92,32 @@ app.route('/articles/:articleTitle')
                 res.send("Success");
             }
         });
-});
+})
+.patch(function(req, res){
+    Article.updateOne(
+        {title: req.params.articleTitle},
+        {$set: req.body},
+        function(err){
+            if (!err) {
+                res.send("Successfully updated article.");
+            } else {
+                res.send("failed");
+            }
+        }
+        );
+})
+.delete(function(req, res){
+    Article.deleteOne(
+        {title: req.params.articleTitle},
+        function(err) {
+            if (!err) {
+                res.send("Successfully deleted article.");
+            } else {
+                res.send("failed");
+            }
+        }
+    )
+})
 
 app.listen(port, ()=>{
     console.log('running on port ' + port);
